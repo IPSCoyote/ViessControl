@@ -23,7 +23,7 @@
         }
  
         //=== Module Functions =========================================================================================
-   
+        @access public 
         public function ReceiveData($JSONString) {
           // Receive data from serial port I/O
           $data = json_decode($JSONString);
