@@ -51,9 +51,9 @@
         *
         */
         
-        public function identifyHeatingControl($ID) {
+        public function identifyHeatingControl($InstanceID) {
           /* identify the connected Heating Control */
-          echo "ViessControl_identifyHeatingControl for instance ".$ID;
+          echo "ViessControl_identifyHeatingControl for instance ".$InstanceID;
          
           // Init Communication
           if ( startCommunication() === true ) {
