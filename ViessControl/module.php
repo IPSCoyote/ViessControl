@@ -32,8 +32,14 @@
         private function startCommunication() {
           // open serial port (parent)
           $SerialPortInstanceID = IPS_GetInstance($this->InstanceID)['ConnectionID'];
-          if ( $SerialPortInstanceID == false ) return false;
+            
+          echo "Serial Port ID = ".$SerialPortInstanceID;  
+            
+          if ( $SerialPortInstanceID == 0 ) return false;
           $ModuleID = IPS_GetInstance(IPS_GetInstance($SerialPortInstanceID)['ConnectionID'])['ModuleInfo']['ModuleID'];
+           
+          echo "Module ID = ".$ModuleID;
+               
           if ( $ModuleID !== '{6DC3D946-0D31-450F-A8C6-C42DB8D7D4F1}' ) return false;
             
           echo "try to open serial port";
