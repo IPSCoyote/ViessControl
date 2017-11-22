@@ -30,7 +30,16 @@
           $data = json_decode($JSONString);
           IPS_LogMessage("ReceiveData", utf8_decode($data->Buffer));
  
+	  echo hex2String( $data->Buffer );
+		
           // Process data
+	  switch $this->GetBuffer( "PortState" )
+	  {
+            case COMPORT_INIT:
+	      if ( hex2String( $data->Buffer ) == "6" )
+		$this->GetBuffer( "PortState", COMPORT_READY );    
+	      break;
+	  }
  
         }
         
@@ -65,7 +74,7 @@
 	    $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
 						      "Buffer" => $this->Hex2String("160000") )));
             usleep(500000); // wait 0.5 seconds
-	    $tryCounter --;	  
+	    $tryCounter--;	  
 	  } while ( $this->GetBuffer( "PortState" ) != COMPORT_READY OR 
 		    $tryCounter > 0 );
 		
