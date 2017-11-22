@@ -80,8 +80,7 @@
         
         public function identifyHeatingControl() {
           /* identify the connected Heating Control */
-          echo "ViessControl_identifyHeatingControl for instance ".$this->InstanceID;
-         
+          
           // Init Communication
           if ( $this->startCommunication() === true ) {
             // Init successful
@@ -91,11 +90,8 @@
             // End Communication
             $this->endCommunication();
           }
-          else
-          {
-             // Init of Communication failed
-          }
-            
+          else return false;
+
         }
         
         
