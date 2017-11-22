@@ -18,7 +18,7 @@ Es soll sowohl Zustandsdaten (z.B. Kesseltemperatur) als auch Schaltaktionen (z.
 
 **Unterstützte Steuerungen**
 
-* Vitodens 200/300/333 mit Vitronic 100 (HC1)
+* Vitodens 200/300 mit Vitotronic 200 (HO1)
 
 
 ## 2. Systemanforderungen
