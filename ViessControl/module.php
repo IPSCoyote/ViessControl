@@ -37,15 +37,11 @@
           $ModuleID = IPS_GetInstance($SerialPortInstanceID)['ModuleInfo']['ModuleID'];      
           if ( $ModuleID !== '{6DC3D946-0D31-450F-A8C6-C42DB8D7D4F1}' ) return false; // wrong parent type
             
-          echo "try to open serial port";
           if ( COMPort_GetOpen( $SerialPortInstanceID ) != true )
           {
 	        COMPort_SetOpen( $SerialPortInstanceID, true );
 	        IPS_ApplyChanges( $SerialPortInstanceID );
           }
-          
-          if ( COMPort_GetOpen( $SerialPortInstanceID ) != true ) { echo "... failed"; }
-           else { echo "... opened"; }
             
           // send 0x04 to bring communication into a defined state
           // send 0x16 0x00 0x00 till Vitotronic has answered with 0x06 (Muss über eine property gesetzt im Receive gehandhabt werden)
@@ -55,8 +51,24 @@
         } 
         
         private function endCommunication() {
-          // send 0x04
-          // close serial port (parent)
+	  // get serial port (parent) and check
+	  $SerialPortInstanceID = IPS_GetInstance($this->InstanceID)['ConnectionID'];
+	  if ( $SerialPortInstanceID == 0 ) return false; // No parent assigned     
+          // check parent is serial port  
+          $ModuleID = IPS_GetInstance($SerialPortInstanceID)['ModuleInfo']['ModuleID'];      
+          if ( $ModuleID !== '{6DC3D946-0D31-450F-A8C6-C42DB8D7D4F1}' ) return false; // wrong parent type
+	  if ( COMPort_GetOpen( $SerialPortInstanceID ) != true ) return false; // com port closed	
+		
+	  // send 0x04	
+		
+	  // Close serial port
+	  if ( COMPort_GetOpen( $SerialPortInstanceID ) != false )
+          {
+	        COMPort_SetOpen( $SerialPortInstanceID, false );
+	        IPS_ApplyChanges( $SerialPortInstanceID );
+          }
+		
+	  return true;			
         }
         
         //=== Module Prefix Functions ===================================================================================
