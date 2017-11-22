@@ -54,15 +54,22 @@
           SetBuffer( "PortState", COMPORT_OPEN );
             
           // send 0x04 to bring communication into a defined state
-          COMPort_SendText( $SerialPortInstanceID, $this->Hex2String("04") );		
+	  $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
+						    "Buffer" => $this->Hex2String("04") )));
           SetBuffer( "PortState", COMPORT_INIT );
 	  sleep(1); // wait so vitotronic reacts	
 		
           // now send 0x16 0x00 0x00 till Vitotronic has answered with 0x06 (in receive data)
+	  $tryCounter = 10;
 	  do {
-	    COMPort_SendText( $SerialPortInstanceID, $this->Hex2String("04") );
+	    $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
+						      "Buffer" => $this->Hex2String("160000") )));
             usleep(500000); // wait 0.5 seconds
-	  } while ( GetBuffer( "PortState" ) == COMPORT_READY );
+	    $tryCounter --;	  
+	  } while ( GetBuffer( "PortState" ) != COMPORT_READY OR 
+		    $tryCounter > 0 );
+		
+          echo GetBuffer( "PortState" );
 		
           // Fehlerhandling / nicht unendlich laufen
           return true;
