@@ -29,13 +29,13 @@
           $data = json_decode($JSONString);
           IPS_LogMessage("ReceiveData", utf8_decode($data->Buffer));
           echo "Daten...";
-	  echo hex2String( $data->Buffer );
+	  echo $this->hex2String( $data->Buffer );
 		
           // Process data
 	  switch ( $this->GetBuffer( "PortState" ) )
 	  {
 	    case ViessControl::COMPORT_INIT:
-	      if ( hex2String( $data->Buffer ) == "6" )
+	      if ( $this->hex2String( $data->Buffer ) == "6" )
 		$this->GetBuffer( "PortState", ViessControl::COMPORT_READY );    
 	      break;
 	  }
