@@ -51,7 +51,7 @@
         *
         */
         
-        public function identifyHeatingControl($InstanceID) {
+        public function identifyHeatingControl() {
           /* identify the connected Heating Control */
           echo "ViessControl_identifyHeatingControl for instance ".$InstanceID;
          
