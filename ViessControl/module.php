@@ -23,7 +23,11 @@
         }
  
         //=== Module Functions =========================================================================================
-        /* @access public */
+        /**
+        * Interne Funktion des SDK.
+        *
+        * @access public
+        */
         public function ReceiveData($JSONString) {
           // Receive data from serial port I/O
           $data = json_decode($JSONString);
@@ -72,7 +76,7 @@
 	  do {
 	    $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
 						      "Buffer" => $this->Hex2String("160000") )));
-            usleep(500000); // wait 0.5 seconds
+            sleep(1); // wait 1 second
 	    $tryCounter--;	  
 	  } while ( $this->GetBuffer( "PortState" ) != ViessControl::COMPORT_READY AND
 		    $tryCounter > 0 );
