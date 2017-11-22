@@ -15,6 +15,7 @@
           /* Create is called ONCE on Instance creation and start of IP-Symcon.
              Status-Variables und Modul-Properties for permanent usage should be created here  */
           parent::Create(); 
+	  $this->RequireParent("{6DC3D946-0D31-450F-A8C6-C42DB8D7D4F1}");
         }
  
         public function ApplyChanges() {
@@ -46,14 +47,14 @@
         
         //=== Private Functions for Communication handling with Vitotronic ==============================================
         private function startCommunication() {
-		$this->SetReceiveDataFilter(".*018EF6B5-AB94-40C6-AA53-46943E824ACF.*");
-          // open serial port (parent)
+          // check serial port (parent)
           $SerialPortInstanceID = IPS_GetInstance($this->InstanceID)['ConnectionID']; 
           if ( $SerialPortInstanceID == 0 ) return false; // No parent assigned  
             
           $ModuleID = IPS_GetInstance($SerialPortInstanceID)['ModuleInfo']['ModuleID'];      
           if ( $ModuleID !== '{6DC3D946-0D31-450F-A8C6-C42DB8D7D4F1}' ) return false; // wrong parent type
             
+          // open serial port
           if ( COMPort_GetOpen( $SerialPortInstanceID ) != true )
           {
 	        COMPort_SetOpen( $SerialPortInstanceID, true );
