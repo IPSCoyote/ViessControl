@@ -32,7 +32,7 @@
         private function startCommunication() {
           // open serial port (parent)
 
-          echo $this->GetParentID($this->InstanceID);
+          echo $this->GetParent($this->InstanceID);
           echo $this->GetConfigurationForParent();
             
           
