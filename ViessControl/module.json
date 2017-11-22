@@ -1,0 +1,14 @@
+{
+    "id": "{B4624A42-F80A-4975-B692-7FB4D06CC805}",
+    "name": "ViessControl",
+    "type": 3,
+    "vendor": "Viessmann",
+    "aliases":
+    [
+        "Vitodens 200/300/333 mit Vitotronic 100"
+    ],  
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "ViessControl"
+}
