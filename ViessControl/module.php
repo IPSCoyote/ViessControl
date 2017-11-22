@@ -31,21 +31,21 @@
         //=== Private Functions for Communication handling with Vitotronic ==============================================
         private function startCommunication() {
           // open serial port (parent)
-          $SerialPortInstanceID = IPS_GetInstance($this->InstanceID)['ConnectionID'];
+          $SerialPortInstanceID = IPS_GetInstance($this->InstanceID)['ConnectionID']; 
+          if ( $SerialPortInstanceID == 0 ) return false; // No parent assigned  
             
-          echo "Serial Port ID = ".$SerialPortInstanceID;  
-            
-          if ( $SerialPortInstanceID == 0 ) return false;
-          $ModuleID = IPS_GetInstance(IPS_GetInstance($SerialPortInstanceID)['ConnectionID'])['ModuleInfo']['ModuleID'];
-           
-          echo "Module ID = ".$ModuleID;
-               
-          if ( $ModuleID !== '{6DC3D946-0D31-450F-A8C6-C42DB8D7D4F1}' ) return false;
+          $ModuleID = IPS_GetInstance($SerialPortInstanceID)['ModuleInfo']['ModuleID']      
+          if ( $ModuleID !== '{6DC3D946-0D31-450F-A8C6-C42DB8D7D4F1}' ) return false; // wrong parent type
             
           echo "try to open serial port";
-            
+          if ( COMPort_GetOpen( $SerialPortInstanceID ) != true )
+          {
+	        COMPort_SetOpen( $SerialPortInstanceID, true );
+	        IPS_ApplyChanges( $SerialPortInstanceID );
+          }
           
-            
+          if ( COMPort_GetOpen( $SerialPortInstanceID ) != true ) { echo "... failed"; }
+           else { echo "... opened"; }
             
           // send 0x04 to bring communication into a defined state
           // send 0x16 0x00 0x00 till Vitotronic has answered with 0x06 (Muss über eine property gesetzt im Receive gehandhabt werden)
