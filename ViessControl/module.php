@@ -34,7 +34,7 @@
           $SerialPortInstanceID = IPS_GetInstance($this->InstanceID)['ConnectionID']; 
           if ( $SerialPortInstanceID == 0 ) return false; // No parent assigned  
             
-          $ModuleID = IPS_GetInstance($SerialPortInstanceID)['ModuleInfo']['ModuleID']      
+          $ModuleID = IPS_GetInstance($SerialPortInstanceID)['ModuleInfo']['ModuleID'];      
           if ( $ModuleID !== '{6DC3D946-0D31-450F-A8C6-C42DB8D7D4F1}' ) return false; // wrong parent type
             
           echo "try to open serial port";
