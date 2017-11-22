@@ -44,7 +44,7 @@
 	      break;
 	  }
  
-          return true:
+          return true;
         }
         
         //=== Private Functions for Communication handling with Vitotronic ==============================================
