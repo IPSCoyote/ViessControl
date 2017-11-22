@@ -11,18 +11,12 @@
           parent::__construct($InstanceID);
         }
  
-	/**
-        * @access public
-        */
         public function Create() {
           /* Create is called ONCE on Instance creation and start of IP-Symcon.
              Status-Variables und Modul-Properties for permanent usage should be created here  */
           parent::Create(); 
         }
  
-	/**
-        * @access public
-        */
         public function ApplyChanges() {
           /* Called on 'apply changes' in the configuration UI and after creation of the instance */
           parent::ApplyChanges();
@@ -31,10 +25,6 @@
         }
  
         //=== Module Functions =========================================================================================
-        /**
-        *
-        * @access public
-        */
         public function ReceiveData($JSONString) {
           // Receive data from serial port I/O
           $data = json_decode($JSONString);
