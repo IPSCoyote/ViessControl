@@ -31,9 +31,8 @@
         //=== Private Functions for Communication handling with Vitotronic ==============================================
         private function startCommunication() {
           // open serial port (parent)
-
-          echo $this->GetParent($this->InstanceID);
-          echo $this->GetConfigurationForParent();
+          $SerialPortInstanceID = IPS_GetInstance($this->InstanceID)['ConnectionID'];
+          echo $this->ConnectionID;
             
           
             
