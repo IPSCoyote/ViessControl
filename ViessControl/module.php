@@ -33,7 +33,7 @@
 	  echo hex2String( $data->Buffer );
 		
           // Process data
-	  switch $this->GetBuffer( "PortState" )
+	  switch ( $this->GetBuffer( "PortState" ) )
 	  {
             case COMPORT_INIT:
 	      if ( hex2String( $data->Buffer ) == "6" )
