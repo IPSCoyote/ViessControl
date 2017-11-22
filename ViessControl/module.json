@@ -7,8 +7,8 @@
     [
         "Vitodens 200/300/333 mit Vitotronic 100 (HO1)"
     ],  
-    "parentRequirements": [],
-    "childRequirements": [],
-    "implemented": [],
+    "parentRequirements": ["{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}"], // Serial Port I/O TX
+    "childRequirements": [],                                          // No Communication to Childs
+    "implemented": ["{018EF6B5-AB94-40C6-AA53-46943E824ACF}"],        // Serial Port I/O RX
     "prefix": "ViessControl"
 }
