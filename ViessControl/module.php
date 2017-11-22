@@ -31,7 +31,9 @@
         //=== Private Functions for Communication handling with Vitotronic ==============================================
         private function startCommunication() {
           // open serial port (parent)
-          
+          echo "Serial Port is ID ".IPS_GetParentID( $this->InstanceID );
+            
+            
           // send 0x04 to bring communication into a defined state
           // send 0x16 0x00 0x00 till Vitotronic has answered with 0x06 (Muss über eine property gesetzt im Receive gehandhabt werden)
         
