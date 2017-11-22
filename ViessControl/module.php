@@ -74,7 +74,7 @@
 						      "Buffer" => $this->Hex2String("160000") )));
             usleep(500000); // wait 0.5 seconds
 	    $tryCounter--;	  
-	  } while ( $this->GetBuffer( "PortState" ) != ViessControl::COMPORT_READY OR 
+	  } while ( $this->GetBuffer( "PortState" ) != ViessControl::COMPORT_READY AND
 		    $tryCounter > 0 );
 		
           echo $this->GetBuffer( "PortState" );
