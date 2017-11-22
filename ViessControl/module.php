@@ -5,7 +5,6 @@
 	const COMPORT_INIT   = 'Init';
 	const COMPORT_READY  = 'Ready';
 	const COMPORT_CLOSED = 'Closed';
-
 	    
         public function __construct($InstanceID) {
           /* Constructor is called before each function call */
@@ -35,9 +34,9 @@
           // Process data
 	  switch ( $this->GetBuffer( "PortState" ) )
 	  {
-            case COMPORT_INIT:
+	    case ViessControl::COMPORT_INIT:
 	      if ( hex2String( $data->Buffer ) == "6" )
-		$this->GetBuffer( "PortState", COMPORT_READY );    
+		$this->GetBuffer( "PortState", ViessControl::COMPORT_READY );    
 	      break;
 	  }
  
@@ -60,12 +59,12 @@
 		
 	  if ( COMPort_GetOpen( $SerialPortInstanceID ) != true ) return false; // Port not open
 		
-          $this->SetBuffer( "PortState", COMPORT_OPEN );
+          $this->SetBuffer( "PortState", ViessControl::COMPORT_OPEN );
             
           // send 0x04 to bring communication into a defined state
 	  $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
 						    "Buffer" => $this->Hex2String("04") )));
-          $this->SetBuffer( "PortState", COMPORT_INIT );
+          $this->SetBuffer( "PortState", ViessControl::COMPORT_INIT );
 	  sleep(1); // wait so vitotronic reacts	
 		
           // now send 0x16 0x00 0x00 till Vitotronic has answered with 0x06 (in receive data)
@@ -75,7 +74,7 @@
 						      "Buffer" => $this->Hex2String("160000") )));
             usleep(500000); // wait 0.5 seconds
 	    $tryCounter--;	  
-	  } while ( $this->GetBuffer( "PortState" ) != COMPORT_READY OR 
+	  } while ( $this->GetBuffer( "PortState" ) != ViessControl::COMPORT_READY OR 
 		    $tryCounter > 0 );
 		
           echo $this->GetBuffer( "PortState" );
@@ -93,8 +92,9 @@
           if ( $ModuleID !== '{6DC3D946-0D31-450F-A8C6-C42DB8D7D4F1}' ) return false; // wrong parent type
 	  if ( COMPort_GetOpen( $SerialPortInstanceID ) != true ) return false; // com port closed	
 		
-	  // send 0x04	
-	  COMPort_SendText( $SerialPortInstanceID, $this->Hex2String("04") );	
+	  // send 0x04		 
+	  $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
+						    "Buffer" => $this->Hex2String("04") )));	
 		
 	  // Close serial port
 	  if ( COMPort_GetOpen( $SerialPortInstanceID ) != false )
@@ -102,6 +102,7 @@
 	        COMPort_SetOpen( $SerialPortInstanceID, false );
 	        IPS_ApplyChanges( $SerialPortInstanceID );
           }
+	  $this->SetBuffer( "PortState", ViessControl::COMPORT_CLOSED );	
 		
 	  return true;			
         }
