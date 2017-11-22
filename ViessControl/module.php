@@ -17,7 +17,18 @@
           parent::ApplyChanges();
         }
  
-        //=== Modul Funktionen =========================================================================================
+        //=== Module Functions =========================================================================================
+   
+        public function ReceiveData($JSONString) {
+          // Receive data from serial port I/O
+          $data = json_decode($JSONString);
+          IPS_LogMessage("ReceiveData", utf8_decode($data->Buffer));
+ 
+          // Process data
+ 
+        }
+        
+        //=== Module Prefix Functions ===================================================================================
         /* Own module functions called via the defined prefix ViessControl_* 
         *
         * ViessControl_identifyHeatingControl($id);
@@ -27,6 +38,13 @@
         public function identifyHeatingControl($ID) {
           /* identify the connected Heating Control */
           echo "ViessControl_identifyHeatingControl for instance ".$ID;
+         
+          // Open serial port if needed
+            
+          // send command to request identification data from control
+          $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
+                                                    "Buffer" => $data->Buffer)));
+          
         }
     }
 ?>
