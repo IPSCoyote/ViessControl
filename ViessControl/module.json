@@ -5,7 +5,7 @@
     "vendor": "Viessmann",
     "aliases":
     [
-        "Vitodens 200/300/333 mit Vitotronic 100 (HO1)"
+        "Vitodens 200/300 mit Vitotronic 200 (HO1)"
     ],  
     "parentRequirements": ["{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}"], 
     "childRequirements": [],                                          
