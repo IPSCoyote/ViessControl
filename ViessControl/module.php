@@ -1,6 +1,12 @@
 <?
     class ViessControl extends IPSModule {
  
+	const COMPORT_OPEN   = 'Open';
+	const COMPORT_INIT   = 'Init';
+	const COMPORT_READY  = 'Ready';
+	const COMPORT_CLOSED = 'Closed';
+
+	    
         public function __construct($InstanceID) {
           /* Constructor is called before each function call */
           parent::__construct($InstanceID);
@@ -42,10 +48,22 @@
 	        COMPort_SetOpen( $SerialPortInstanceID, true );
 	        IPS_ApplyChanges( $SerialPortInstanceID );
           }
+		
+	  if ( COMPort_GetOpen( $SerialPortInstanceID ) != true ) return false; // Port not open
+		
+          SetBuffer( "PortState", COMPORT_OPEN );
             
           // send 0x04 to bring communication into a defined state
-          // send 0x16 0x00 0x00 till Vitotronic has answered with 0x06 (Muss über eine property gesetzt im Receive gehandhabt werden)
-        
+          COMPort_SendText( $SerialPortInstanceID, $this->Hex2String("04") );		
+          SetBuffer( "PortState", COMPORT_INIT );
+	  sleep(1); // wait so vitotronic reacts	
+		
+          // now send 0x16 0x00 0x00 till Vitotronic has answered with 0x06 (in receive data)
+	  do {
+	    COMPort_SendText( $SerialPortInstanceID, $this->Hex2String("04") );
+            usleep(500000); // wait 0.5 seconds
+	  } while ( GetBuffer( "PortState" ) == COMPORT_READY );
+		
           // Fehlerhandling / nicht unendlich laufen
           return true;
         } 
@@ -60,6 +78,7 @@
 	  if ( COMPort_GetOpen( $SerialPortInstanceID ) != true ) return false; // com port closed	
 		
 	  // send 0x04	
+	  COMPort_SendText( $SerialPortInstanceID, $this->Hex2String("04") );	
 		
 	  // Close serial port
 	  if ( COMPort_GetOpen( $SerialPortInstanceID ) != false )
@@ -70,7 +89,24 @@
 		
 	  return true;			
         }
-        
+       
+        //=== Tool Functions ============================================================================================
+	private function String2Hex($string){
+          $hex='';
+          for ($i=0; $i < strlen($string); $i++){
+            $hex .= dechex(ord($string[$i]));
+          }
+          return $hex;
+        }
+  
+        private function Hex2String($hex){
+          $string='';
+          for ($i=0; $i < strlen($hex)-1; $i+=2){
+            $string .= chr(hexdec($hex[$i].$hex[$i+1]));
+          }
+          return $string;
+        }     
+	    
         //=== Module Prefix Functions ===================================================================================
         /* Own module functions called via the defined prefix ViessControl_* 
         *
