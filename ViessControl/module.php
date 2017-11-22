@@ -32,7 +32,8 @@
         private function startCommunication() {
           // open serial port (parent)
           $SerialPortInstanceID = IPS_GetInstance($this->InstanceID)['ConnectionID'];
-          echo $this->ConnectionID;
+          if ( $SerialPortInstanceID == false ) return false;
+          echo $SerialPortInstanceID;
             
           
             
