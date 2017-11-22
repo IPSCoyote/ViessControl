@@ -20,6 +20,8 @@
         public function ApplyChanges() {
           /* Called on 'apply changes' in the configuration UI and after creation of the instance */
           parent::ApplyChanges();
+		
+          $this->SetReceiveDataFilter(".*018EF6B5-AB94-40C6-AA53-46943E824ACF.*");
         }
  
         //=== Module Functions =========================================================================================
