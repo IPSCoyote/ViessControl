@@ -28,10 +28,26 @@
  
         }
         
+        //=== Private Functions for Communication handling with Vitotronic ==============================================
+        private function startCommunication() {
+          // open serial port (parent)
+          
+          // send 0x04 to bring communication into a defined state
+          // send 0x16 0x00 0x00 till Vitotronic has answered with 0x06 (Muss über eine property gesetzt im Receive gehandhabt werden)
+        
+          // Fehlerhandling / nicht unendlich laufen
+          return true;
+        } 
+        
+        private function endCommunication() {
+          // send 0x04
+          // close serial port (parent)
+        }
+        
         //=== Module Prefix Functions ===================================================================================
         /* Own module functions called via the defined prefix ViessControl_* 
         *
-        * ViessControl_identifyHeatingControl($id);
+        * - ViessControl_identifyHeatingControl($id);
         *
         */
         
@@ -39,12 +55,22 @@
           /* identify the connected Heating Control */
           echo "ViessControl_identifyHeatingControl for instance ".$ID;
          
-          // Open serial port if needed
+          // Init Communication
+          if ( startCommunication() === true ) {
+            // Init successful
+            // send command to request identification data from control
+            $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
+                                                      "Buffer" => $data->Buffer)));
+            // End Communication
+            endCommunication();
+          }
+          else
+          {
+             // Init of Communication failed
+          }
             
-          // send command to request identification data from control
-          $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
-                                                    "Buffer" => $data->Buffer)));
-          
         }
+        
+        
     }
 ?>
