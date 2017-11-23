@@ -23,9 +23,7 @@
         //=== Module Functions =========================================================================================
         public function ReceiveData($JSONString) {
           // Receive data from serial port I/O
-          $data = json_decode($JSONString);
-
-          $this->sendDebug( "ViessControl", $data->Buffer, 1 );		
+          $data = json_decode($JSONString);	
 		
           // Process data
 	  switch ( $this->GetBuffer( "PortState" ) )
