@@ -70,7 +70,7 @@
 	  $tryCounter = 10;
 	  do {
 	    $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
-						      "Buffer" => $this->Hex2String("160000") )));
+						      "Buffer" => utf8_encode($this->Hex2String("160000")) )));
             sleep(1); // wait 1 second
 	    $tryCounter--;	  
 	  } while ( $this->GetBuffer( "PortState" ) != ViessControl::COMPORT_READY AND
