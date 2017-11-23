@@ -6,11 +6,6 @@
 	const COMPORT_READY  = 'Ready';
 	const COMPORT_CLOSED = 'Closed';
 	    
-        public function __construct($InstanceID) {
-          /* Constructor is called before each function call */
-          parent::__construct($InstanceID);
-        }
- 
         public function Create() {
           /* Create is called ONCE on Instance creation and start of IP-Symcon.
              Status-Variables und Modul-Properties for permanent usage should be created here  */
@@ -36,7 +31,7 @@
 	  switch ( $this->GetBuffer( "PortState" ) )
 	  {
 	    case ViessControl::COMPORT_INIT:
-	      if ( $this->hex2String( $data->Buffer ) == chr(6) )
+	      if ( $data->Buffer == chr(0x04) )
 		$this->SetBuffer( "PortState", ViessControl::COMPORT_READY );    
 	      break;
 	  }
@@ -66,7 +61,7 @@
             
           // send 0x04 to bring communication into a defined state
 	  $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
-						    "Buffer" => $this->Hex2String("04") )));
+						    "Buffer" => chr(0x04) )));
           $this->SetBuffer( "PortState", ViessControl::COMPORT_INIT );
 	  sleep(1); // wait so vitotronic reacts	
 		
