@@ -25,7 +25,7 @@
           // Receive data from serial port I/O
           $data = json_decode($JSONString);
 
-          sendDebug( "ViessControl", $data->Buffer, 1 );		
+          $this->sendDebug( "ViessControl", $data->Buffer, 1 );		
 		
           // Process data
 	  switch ( $this->GetBuffer( "PortState" ) )
