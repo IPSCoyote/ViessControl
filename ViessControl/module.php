@@ -29,10 +29,7 @@
         public function ReceiveData($JSONString) {
           // Receive data from serial port I/O
           $data = json_decode($JSONString);
-          IPS_LogMessage("ReceiveData", utf8_decode($data->Buffer));
-          echo "Daten...";
-	  echo $this->hex2String( $data->Buffer );
-		
+
           // Process data
 	  switch ( $this->GetBuffer( "PortState" ) )
 	  {
