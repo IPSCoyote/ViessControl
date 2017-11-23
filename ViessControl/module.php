@@ -34,7 +34,7 @@
 	  switch ( $this->GetBuffer( "PortState" ) )
 	  {
 	    case ViessControl::COMPORT_INIT:
-	      if ( $this->hex2String( $data->Buffer ) == "6" )
+	      if ( $this->hex2String( $data->Buffer ) == chr(6) )
 		$this->SetBuffer( "PortState", ViessControl::COMPORT_READY );    
 	      break;
 	  }
