@@ -31,7 +31,8 @@
 	  switch ( $this->GetBuffer( "PortState" ) )
 	  {
 	    case ViessControl::COMPORT_INIT:
-	      if ( $data->Buffer == chr(0x04) )
+	      // 0x06 confirms the 0x16 0x00 0x00 request 
+	      if ( $data->Buffer == chr(0x06) )
 		$this->SetBuffer( "PortState", ViessControl::COMPORT_READY );    
 	      break;
 	  }
