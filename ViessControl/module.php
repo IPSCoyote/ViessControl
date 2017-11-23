@@ -32,7 +32,7 @@
 	  {
 	    case ViessControl::COMPORT_INIT:
 	      // 0x06 confirms the 0x16 0x00 0x00 request 
-	      if ( $data->Buffer == chr(0x06) )
+	      if ( $data->Buffer == "\x06" )
 		$this->SetBuffer( "PortState", ViessControl::COMPORT_READY );    
 	      break;
 	  }
@@ -62,7 +62,7 @@
             
           // send 0x04 to bring communication into a defined state
 	  $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
-						    "Buffer" => chr(0x04) )));
+						    "Buffer" => utf8_encode("\x04") )));
           $this->SetBuffer( "PortState", ViessControl::COMPORT_INIT );
 	  sleep(1); // wait so vitotronic reacts	
 		
@@ -70,7 +70,7 @@
 	  $tryCounter = 10;
 	  do {
 	    $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
-						      "Buffer" => utf8_encode($this->Hex2String("160000")) )));
+						      "Buffer" => utf8_encode("\x16\x00\x00") )));
             sleep(1); // wait 1 second
 	    $tryCounter--;	  
 	  } while ( $this->GetBuffer( "PortState" ) != ViessControl::COMPORT_READY AND
@@ -93,7 +93,7 @@
 		
 	  // send 0x04		 
 	  $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
-						    "Buffer" => $this->Hex2String("04") )));	
+						    "Buffer" => utf8_encode("\x04") )));	
 		
 	  // Close serial port
 	  if ( COMPort_GetOpen( $SerialPortInstanceID ) != false )
