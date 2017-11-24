@@ -10,7 +10,6 @@
           /* Create is called ONCE on Instance creation and start of IP-Symcon.
              Status-Variables und Modul-Properties for permanent usage should be created here  */
           parent::Create(); 
-	  $this->RequireParent("{6DC3D946-0D31-450F-A8C6-C42DB8D7D4F1}");
         }
  
         public function ApplyChanges() {
@@ -48,13 +47,14 @@
           if ( $ModuleID !== '{6DC3D946-0D31-450F-A8C6-C42DB8D7D4F1}' ) return false; // wrong parent type
             
           // open serial port
-          if ( COMPort_GetOpen( $SerialPortInstanceID ) != true )
+          
+          if ( IPS_GetProperty( $SerialPortInstanceID, "Open" ) != true )
           {
-	        COMPort_SetOpen( $SerialPortInstanceID, true );
+	        IPS_SetProperty( $SerialPortInstanceID, "Open", true );
 	        IPS_ApplyChanges( $SerialPortInstanceID );
           }
 		
-	  if ( COMPort_GetOpen( $SerialPortInstanceID ) != true ) return false; // Port not open
+	  if ( IPS_GetProperty( $SerialPortInstanceID, "Open" ) != true ) return false; // Port not open
 		
           $this->SetBuffer( "PortState", ViessControl::COMPORT_OPEN );
             
@@ -87,16 +87,16 @@
           // check parent is serial port  
           $ModuleID = IPS_GetInstance($SerialPortInstanceID)['ModuleInfo']['ModuleID'];      
           if ( $ModuleID !== '{6DC3D946-0D31-450F-A8C6-C42DB8D7D4F1}' ) return false; // wrong parent type
-	  if ( COMPort_GetOpen( $SerialPortInstanceID ) != true ) return false; // com port closed	
+	  if ( IPS_GetProperty( $SerialPortInstanceID, "Open" ) != true ) return false; // com port closed	
 		
 	  // send 0x04		 
 	  $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
 						    "Buffer" => utf8_encode("\x04") )));	
 		
 	  // Close serial port
-	  if ( COMPort_GetOpen( $SerialPortInstanceID ) != false )
+	  if ( IPS_GetProperty( $SerialPortInstanceID, "Open" ) != false )
           {
-	        COMPort_SetOpen( $SerialPortInstanceID, false );
+	        IPS_SetProperty( $SerialPortInstanceID, "Open", false );
 	        IPS_ApplyChanges( $SerialPortInstanceID );
           }
 	  $this->SetBuffer( "PortState", ViessControl::COMPORT_CLOSED );	
