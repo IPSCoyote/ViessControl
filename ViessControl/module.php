@@ -10,7 +10,6 @@
           /* Create is called ONCE on Instance creation and start of IP-Symcon.
              Status-Variables und Modul-Properties for permanent usage should be created here  */
           parent::Create(); 
-	  $this->RequireParent("{6DC3D946-0D31-450F-A8C6-C42DB8D7D4F1}");
         }
  
         public function ApplyChanges() {
