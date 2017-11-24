@@ -97,7 +97,7 @@
 	  // Close serial port
 	  if ( IPS_GetProperty( $SerialPortInstanceID, "Open" ) != false )
           {
-	        IPS_SetProperty( $SerialPortInstanceID, "Open", false )
+	        IPS_SetProperty( $SerialPortInstanceID, "Open", false );
 	        IPS_ApplyChanges( $SerialPortInstanceID );
           }
 	  $this->SetBuffer( "PortState", ViessControl::COMPORT_CLOSED );	
