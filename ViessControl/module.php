@@ -51,7 +51,7 @@
           
           if ( IPS_GetProperty( $SerialPortInstanceID, "Open" ) != true )
           {
-	        IPS_SetProperty( $SerialPortInstanceID, true );
+	        IPS_SetProperty( $SerialPortInstanceID, "Open", true );
 	        IPS_ApplyChanges( $SerialPortInstanceID );
           }
 		
