@@ -161,7 +161,7 @@
 	      // Clear old data
 	      $this->SetBuffer( "RequestedData", "" );
 	      // send request
-	      $this->SetBuffer( "PortState", ViessControl::DATA_REQUESTED ); // to be done before request is send
+	      $this->SetBuffer( "PortState", ViessControl::COMPORT_DATA_REQUESTED ); // to be done before request is send
 	      $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
                                                         "Buffer" => utf8_encode("\x41\x05\x00\x01\x00\xF8\x02\x00"))));
 	      $tryCounter = 10;
