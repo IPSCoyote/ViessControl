@@ -1,10 +1,11 @@
 <?
     class ViessControl extends IPSModule {
  
-	const COMPORT_OPEN   = 'Open';
-	const COMPORT_INIT   = 'Init';
-	const COMPORT_READY  = 'Ready';
-	const COMPORT_CLOSED = 'Closed';
+	const COMPORT_OPEN           = 'Open';             // Comport was just opened
+	const COMPORT_INIT           = 'Init';             // Viessmann INIT was requested
+	const COMPORT_READY          = 'Ready';            // Viessmann confirmed INIT; Control is READY to take commands
+	const COMPORT_CLOSED         = 'Closed';           // Comport is closed
+	const COMPORT_DATA_REQUESTED = 'DataRequested';    // Data was requested from the Control
 	    
         public function Create() {
           /* Create is called ONCE on Instance creation and start of IP-Symcon.
@@ -31,6 +32,12 @@
 	      // 0x06 confirms the 0x16 0x00 0x00 request 
 	      if ( $data->Buffer == "\x06" )
 		$this->SetBuffer( "PortState", ViessControl::COMPORT_READY );    
+	      break;
+			  
+	    case ViessControl::COMPORT_DATA_REQUESTED:
+	      // data was requested from the control
+	      // expected answer is like 0x06 41 07 01 01 55 25 02 07 01 8D
+	      $this->SetBuffer( "PortState", ViessControl::COMPORT_READY );    
 	      break;
 	  }
  
@@ -73,8 +80,6 @@
 	    $tryCounter--;	  
 	  } while ( $this->GetBuffer( "PortState" ) != ViessControl::COMPORT_READY AND
 		    $tryCounter > 0 );
-		
-          echo $this->GetBuffer( "PortState" );
 		
           // Fehlerhandling / nicht unendlich laufen
           return true;
@@ -134,9 +139,19 @@
           // Init Communication
           if ( $this->startCommunication() === true ) {
             // Init successful
+		  
             // send command to request identification data from control ( 0x41 0x05 0x00 0x01 0x00 0xF8 0x02 0x00 ) (Protocol 300)
-            $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
-                                                      "Buffer" => utf8_encode("\x41\x05\x00\x01\x00\xF8\x02\x00"))));
+            if ( $this->GetBuffer( "PortState" ) == ViessControl::COMPORT_READY )
+	    {
+	      $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
+                                                        "Buffer" => utf8_encode("\x41\x05\x00\x01\x00\xF8\x02\x00"))));
+	      $tryCounter = 10;
+	      do {
+                sleep(1); // wait 1 second
+	        $tryCounter--;	  
+	      } while ( $this->GetBuffer( "PortState" ) != ViessControl::COMPORT_READY AND
+		    $tryCounter > 0 );
+	   
             // End Communication
             $this->endCommunication();
           }
