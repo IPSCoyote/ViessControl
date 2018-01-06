@@ -37,7 +37,22 @@
 	    case ViessControl::COMPORT_DATA_REQUESTED:
 	      // data was requested from the control
 	      // expected answer is like 0x06 41 07 01 01 55 25 02 07 01 8D
-	      $this->SetBuffer( "PortState", ViessControl::COMPORT_READY );    
+	      $requestedData = $this->GetBuffer( "RequestedData" );	
+	      $requestedData = $requestedData.$data->Buffer;
+	      $this->SetBuffer( "RequestedData", $requestedData );
+			  
+	      // Check, if answer to data request is complete
+	      if ( strlen( $requestedData ) >= 2 )
+	      {	      
+		 // in the 2nd byte the length of the payload is defined
+		 $expectedPayloadLength = hexdec($requestedData[1]);
+		 $expectedPayloadLength = $expectedPayloadLength + 4; // Start 06 41 + length + Checksum
+		      
+		 if ( strlen( $requestedData ) >= $expectedPayloadLength )
+		 {			
+	           $this->SetBuffer( "PortState", ViessControl::COMPORT_READY );   
+		 }
+	      }
 	      break;
 	  }
  
@@ -143,6 +158,10 @@
             // send command to request identification data from control ( 0x41 0x05 0x00 0x01 0x00 0xF8 0x02 0x00 ) (Protocol 300)
             if ( $this->GetBuffer( "PortState" ) == ViessControl::COMPORT_READY )
 	    {
+	      // Clear old data
+	      $this->SetBuffer( "RequestedData", "" );
+	      // send request
+	      $this->SetBuffer( "PortState", ViessControl::DATA_REQUESTED ); // to be done before request is send
 	      $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
                                                         "Buffer" => utf8_encode("\x41\x05\x00\x01\x00\xF8\x02\x00"))));
 	      $tryCounter = 10;
@@ -150,9 +169,10 @@
                 sleep(1); // wait 1 second
 	        $tryCounter--;	  
 	      } while ( $this->GetBuffer( "PortState" ) != ViessControl::COMPORT_READY AND $tryCounter > 0 );
-	   
+		    	   
               // End Communication
               $this->endCommunication();
+              return $this->GetBuffer( "RequestedData" );
             }
 	  }
           else return false;
