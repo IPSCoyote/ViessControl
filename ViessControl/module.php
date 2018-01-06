@@ -58,13 +58,13 @@
 		
           $this->SetBuffer( "PortState", ViessControl::COMPORT_OPEN );
             
-          // send 0x04 to bring communication into a defined state (Protocoll 300)
+          // send 0x04 to bring communication into a defined state (Protocol 300)
 	  $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
 						    "Buffer" => utf8_encode("\x04") )));
           $this->SetBuffer( "PortState", ViessControl::COMPORT_INIT );
 	  sleep(1); // wait so vitotronic reacts	
 		
-          // now send 0x16 0x00 0x00 till Vitotronic has answered with 0x06 (in receive data) (Protocoll 300)
+          // now send 0x16 0x00 0x00 till Vitotronic has answered with 0x06 (in receive data) (Protocol 300)
 	  $tryCounter = 10;
 	  do {
 	    $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
@@ -134,9 +134,9 @@
           // Init Communication
           if ( $this->startCommunication() === true ) {
             // Init successful
-            // send command to request identification data from control ( 0x41 0x05 0x00 0x01 0x00 0xF8 0x02 0x00 )
-            //$this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
-            //                                          "Buffer" => $data->Buffer)));
+            // send command to request identification data from control ( 0x41 0x05 0x00 0x01 0x00 0xF8 0x02 0x00 ) (Protocol 300)
+            $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
+                                                      "Buffer" => utf8_encode("\x41\x05\x00\x01\x00\xF8\x02\x00"))));
             // End Communication
             $this->endCommunication();
           }
