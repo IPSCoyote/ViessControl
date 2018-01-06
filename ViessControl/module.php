@@ -149,16 +149,14 @@
 	      do {
                 sleep(1); // wait 1 second
 	        $tryCounter--;	  
-	      } while ( $this->GetBuffer( "PortState" ) != ViessControl::COMPORT_READY AND
-		    $tryCounter > 0 );
+	      } while ( $this->GetBuffer( "PortState" ) != ViessControl::COMPORT_READY AND $tryCounter > 0 );
 	   
-            // End Communication
-            $this->endCommunication();
-          }
+              // End Communication
+              $this->endCommunication();
+            }
+	  }
           else return false;
-
         }
-        
         
     }
 ?>
