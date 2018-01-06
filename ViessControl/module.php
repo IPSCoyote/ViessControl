@@ -58,13 +58,13 @@
 		
           $this->SetBuffer( "PortState", ViessControl::COMPORT_OPEN );
             
-          // send 0x04 to bring communication into a defined state
+          // send 0x04 to bring communication into a defined state (Protocoll 300)
 	  $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
 						    "Buffer" => utf8_encode("\x04") )));
           $this->SetBuffer( "PortState", ViessControl::COMPORT_INIT );
 	  sleep(1); // wait so vitotronic reacts	
 		
-          // now send 0x16 0x00 0x00 till Vitotronic has answered with 0x06 (in receive data)
+          // now send 0x16 0x00 0x00 till Vitotronic has answered with 0x06 (in receive data) (Protocoll 300)
 	  $tryCounter = 10;
 	  do {
 	    $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
