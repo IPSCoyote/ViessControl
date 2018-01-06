@@ -128,7 +128,7 @@
         *
         */
         
-        public function identifyHeatingControl() {
+        public function IdentifyHeatingControl() {
           /* identify the connected Heating Control */
           
           // Init Communication
