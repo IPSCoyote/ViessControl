@@ -24,7 +24,8 @@
         public function ReceiveData($JSONString) {
 	
 	  $this->sendDebug( "Viess", "ReceiveData Begin", 0 );	
-	 
+	  $this->sendDebug( "Viess", $this->GetBuffer( "PortState" ), 0 );
+		
           // Receive data from serial port I/O
           $data = json_decode($JSONString);	
 		
@@ -43,6 +44,8 @@
 	      $requestedData = $this->GetBuffer( "RequestedData" );	
 	      $requestedData = $requestedData.$data->Buffer;
 	      $this->SetBuffer( "RequestedData", $requestedData );
+			  
+	      $this->sendDebug( "Viess", $requestedData, 0 );
 			  
 	      // Check, if answer to data request is complete
 	      if ( strlen( $requestedData ) >= 2 )
