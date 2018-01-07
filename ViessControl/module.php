@@ -69,7 +69,6 @@
           if ( $ModuleID !== '{6DC3D946-0D31-450F-A8C6-C42DB8D7D4F1}' ) return false; // wrong parent type
             
           // open serial port
-          
           if ( IPS_GetProperty( $SerialPortInstanceID, "Open" ) != true )
           {
 	        IPS_SetProperty( $SerialPortInstanceID, "Open", true );
@@ -93,11 +92,10 @@
 						      "Buffer" => utf8_encode("\x16\x00\x00") )));
             sleep(1); // wait 1 second
 	    $tryCounter--;	  
-	  } while ( $this->GetBuffer( "PortState" ) != ViessControl::COMPORT_READY AND
-		    $tryCounter > 0 );
+	  } while ( $this->GetBuffer( "PortState" ) != ViessControl::COMPORT_READY AND $tryCounter > 0 );
 		
           // Fehlerhandling / nicht unendlich laufen
-          return true;
+	  if ( $tryCounter == 0 ) { return false; } else { return true; }
         } 
         
         private function endCommunication() {
