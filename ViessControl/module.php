@@ -22,6 +22,9 @@
  
         //=== Module Functions =========================================================================================
         public function ReceiveData($JSONString) {
+	
+	  $this->sendDebug( "Viess", "ReceiveData Begin", 0 );	
+	 
           // Receive data from serial port I/O
           $data = json_decode($JSONString);	
 		
@@ -55,7 +58,7 @@
 	      }
 	      break;
 	  }
- 
+          $this->sendDebug( "Viess", "ReceiveData End", 0 );
           return true;
         }
         
