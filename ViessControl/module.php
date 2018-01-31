@@ -236,36 +236,12 @@
           
           // Init Communication
           if ( $this->startCommunication() === true ) {
-            // Init successful
-		  
+            // Init successful, request Data
 	    $result = $this->getDataFromControl( "00F8", 2 );	  
-		  
-            // send command to request identification data from control ( 0x41 0x05 0x00 0x01 0x00 0xF8 0x02 0x00 ) (Protocol 300)
-            //if ( $this->GetBuffer( "PortState" ) == ViessControl::COMPORT_READY )
-	    //{
-	      // Clear old data
-	      //$this->SetBuffer( "ReceiveBuffer", "" );
-              //$this->SetBuffer( "RequestedData", "" );
-	      // send request
-	      //$this->SetBuffer( "PortState", ViessControl::COMPORT_DATA_REQUESTED ); // to be done before request is send
-	      //$this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
-              //                                          "Buffer" => utf8_encode("\x41\x05\x00\x01\x00\xF8\x02\x00"))));
-	      //$tryCounter = 10;
-	      //do {
-              //  sleep(1); // wait 1 second
-	      //  $tryCounter--;	  
-	      //} while ( $this->GetBuffer( "PortState" ) != ViessControl::COMPORT_READY AND $tryCounter > 0 );
-		
-	      //if ( $this->GetBuffer( "PortState" ) == ViessControl::COMPORT_READY ) {
-	      //  $result = $this->GetBuffer( "RequestedData" );
-	      //}
-	      //else { 
-		//$result = false; 
-	      //}
-		    
-              // End Communication
-              $this->endCommunication();
-              return $result;
+            // End Communication
+            $this->endCommunication();
+            // return result
+            return $result;
 	  }
           else { 
             return false; 
