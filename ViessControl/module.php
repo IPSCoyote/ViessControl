@@ -57,7 +57,7 @@
 		 {
 		   $this->sendDebug( "Viess", "YES! ", 0 );
 		   // Get Payload from transmitted data
-	           $expectedDataLength = ord($receivedData[2]);
+	           $expectedDataLength = ord($receivedData[7]);
 	           $this->sendDebug( "Viess", "ReceiveData Length: ".$expectedDataLength, 0 );
 		   $this->SetBuffer( "RequestedData", substr($receivedData, 8, ord($receivedData[7])));
 	           $this->SetBuffer( "PortState", ViessControl::COMPORT_READY );  // Communication done 
