@@ -14,7 +14,7 @@ Nicht verwenden! Don't use it yet!
 
 Das Modul ist dazu gedacht Vitodens/Vitotronic Heizungssteuerungen in [IP-Symcon](www.ip-symcon.de) einzubinden. 
 
-Es soll sowohl Zustandsdaten (z.B. Kesseltemperatur) als auch Schaltaktionen (z.B. aktivieren des Partymodus) zur Verfügung stellen. Das Modul dient **nicht** zur Programmierung der Heizungssteuerung (z.B. von Heizzeiten oder tiefere technische Einstellungen).
+Es soll sowohl Zustandsdaten (z.B. Kesseltemperatur) als auch Schaltaktionen (z.B. Aktivieren des Partymodus) zur Verfügung stellen. Das Modul dient **nicht** zur Programmierung der Heizungssteuerung (z.B. von Heizzeiten oder tieferen technischen Einstellungen).
 
 **Unterstützte Steuerungen**
 
