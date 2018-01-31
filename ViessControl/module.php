@@ -39,6 +39,7 @@
 	      break;
 			  
 	    case ViessControl::COMPORT_DATA_REQUESTED:
+	      $this->sendDebug( "Viess", "  Case B", 0 );
 	      // data was requested from the control
 	      // expected answer is like 0x06 41 07 01 01 55 25 02 07 01 8D
 	      $receivedData = $this->GetBuffer( "ReceiveBuffer" );     // Get previously received data
