@@ -2,7 +2,8 @@
     class ViessControl extends IPSModule {
  
 	const COMPORT_OPEN           = 'Open';             // Comport was just opened
-	const COMPORT_INIT           = 'Init';             // Viessmann INIT was requested
+	const COMPORT_PREINIT        = 'PreInit';          // Viessmann INIT was requested (0x04)
+	const COMPORT_INIT           = 'Init';             // Viessmann INIT was requested (0x16 0x00 0x00)
 	const COMPORT_READY          = 'Ready';            // Viessmann confirmed INIT; Control is READY to take commands
 	const COMPORT_CLOSED         = 'Closed';           // Comport is closed
 	const COMPORT_DATA_REQUESTED = 'DataRequested';    // Data was requested from the Control
@@ -32,6 +33,14 @@
           // Process data
 	  switch ( $this->GetBuffer( "PortState" ) )
 	  {
+	    case ViessControl::COMPORT_PREINIT:
+	      // 0x05 confirms the 0x04 request 
+	      if ( $data->Buffer == "\x05" )
+		$this->SetBuffer( "PortState", ViessControl::COMPORT_INIT );    
+	        $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
+						          "Buffer" => utf8_encode("\x16\x00\x00") )));		         
+	      break;
+			  
 	    case ViessControl::COMPORT_INIT:
 	      // 0x06 confirms the 0x16 0x00 0x00 request 
 	      if ( $data->Buffer == "\x06" )
@@ -77,6 +86,7 @@
         
         //=== Private Functions for Communication handling with Vitotronic ==============================================
         private function startCommunication() {
+	  ///--- HANDLE SERIAL PORT -------------------------------------------------------------------------------------	
           // check serial port (parent)
           $SerialPortInstanceID = IPS_GetInstance($this->InstanceID)['ConnectionID']; 
           if ( $SerialPortInstanceID == 0 ) return false; // No parent assigned  
@@ -94,18 +104,18 @@
 	  if ( IPS_GetProperty( $SerialPortInstanceID, "Open" ) != true ) return false; // Port not open
 		
           $this->SetBuffer( "PortState", ViessControl::COMPORT_OPEN );
-            
+		
+          ///--- INIT CONNECTION ----------------------------------------------------------------------------------------
           // send 0x04 to bring communication into a defined state (Protocol 300)
 	  $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
 						    "Buffer" => utf8_encode("\x04") )));
           $this->SetBuffer( "PortState", ViessControl::COMPORT_INIT );
-	  sleep(1); // wait so vitotronic reacts	
 		
           // now send 0x16 0x00 0x00 till Vitotronic has answered with 0x06 (in receive data) (Protocol 300)
 	  $tryCounter = 10;
 	  do {
-	    $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
-						      "Buffer" => utf8_encode("\x16\x00\x00") )));
+	    //$this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
+		//				      "Buffer" => utf8_encode("\x16\x00\x00") )));
             sleep(1); // wait 1 second
 	    $tryCounter--;	  
 	  } while ( $this->GetBuffer( "PortState" ) != ViessControl::COMPORT_READY AND $tryCounter > 0 );
