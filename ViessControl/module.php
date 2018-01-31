@@ -61,24 +61,11 @@
 	      {	      
 		 $this->sendDebug( "Viess", "  Check all data is there... ", 0 );
 		 // in the 3nd byte the length of the payload (ACK + 0x41 package start first) is defined
-		 $expectedPayloadLength = ord($receivedData[2])+ 4; // Start 06 41 + length + Checksum
-		 $this->sendDebug( "Viess", "  Expected Payload length: ".$expectedPayloadLength, 0 );     
+		 $expectedPayloadLength = ord($receivedData[2])+ 4; // Start 06 41 + length + Checksum  
 		      
 		 if ( strlen( $receivedData ) >= $expectedPayloadLength )
 		 {
-		   $this->sendDebug( "Viess", "YES! ", 0 );
 		   // Get Payload from transmitted data
-	           $this->sendDebug( "Viess", "  Received Byte 0: ".ord($receivedData[0]), 0 );
-	           $this->sendDebug( "Viess", "  Received Byte 1: ".ord($receivedData[1]), 0 );
-                   $this->sendDebug( "Viess", "  Received Byte 2: ".ord($receivedData[2]), 0 );
-                   $this->sendDebug( "Viess", "  Received Byte 3: ".ord($receivedData[3]), 0 );
-                   $this->sendDebug( "Viess", "  Received Byte 4: ".ord($receivedData[4]), 0 );
-                   $this->sendDebug( "Viess", "  Received Byte 5: ".ord($receivedData[5]), 0 );
-		   $this->sendDebug( "Viess", "  Received Byte 6: ".ord($receivedData[6]), 0 );
-                   $this->sendDebug( "Viess", "  Received Byte 7: ".ord($receivedData[7]), 0 );
-	           $this->sendDebug( "Viess", "  Received Byte 8: ".ord($receivedData[8]), 0 );
-		   $this->sendDebug( "Viess", "  Received Byte 9: ".ord($receivedData[9]), 0 );
-                   $this->sendDebug( "Viess", "  Received Byte 10: ".ord($receivedData[10]), 0 );
 		   $this->SetBuffer( "RequestedData", substr($receivedData, 8, 2));
 	           $this->SetBuffer( "PortState", ViessControl::COMPORT_READY );  // Communication done 
 		 }
@@ -116,7 +103,7 @@
 						    "Buffer" => utf8_encode("\x04") )));
           $this->SetBuffer( "PortState", ViessControl::COMPORT_PREINIT );
 		
-          // now send 0x16 0x00 0x00 till Vitotronic has answered with 0x06 (in receive data) (Protocol 300)
+          // now wait for connection to be COMPORT_READY (not too long ;))
 	  $tryCounter = 10;
 	  do {
 	    //$this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
@@ -125,8 +112,12 @@
 	    $tryCounter--;	  
 	  } while ( $this->GetBuffer( "PortState" ) != ViessControl::COMPORT_READY AND $tryCounter > 0 );
 		
-          // Fehlerhandling / nicht unendlich laufen
-	  if ( $tryCounter == 0 ) { return false; } else { return true; }
+	  if ( $this->GetBuffer( "PortState" ) != ViessControl::COMPORT_READY ) {
+            // connection failed
+	    return false; } 
+	  else { 
+	    // connection established
+            return true; }
         } 
         
         private function endCommunication() {
@@ -203,12 +194,17 @@
                 sleep(1); // wait 1 second
 	        $tryCounter--;	  
 	      } while ( $this->GetBuffer( "PortState" ) != ViessControl::COMPORT_READY AND $tryCounter > 0 );
-		    	   
-	      $this->sendDebug( "Viess", "Requested Data: ".$this->GetBuffer( "RequestedData" ), 0 );
+		
+	      if ( $this->GetBuffer( "PortState" ) == ViessControl::COMPORT_READY ) {
+	        $result = $this->GetBuffer( "ReceiveBuffer" );
+	      }
+	      else { 
+		$result = false; 
+	      }
 		    
               // End Communication
               $this->endCommunication();
-              return $this->GetBuffer( "ReceiveBuffer" );
+              return $result;
             }
 	  }
           else return false;
