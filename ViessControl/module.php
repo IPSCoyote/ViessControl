@@ -165,6 +165,39 @@
             return $string;
         }  
 	    
+	private function createPackage( $type, $address, $countOfBytes, $bytesToWrite )
+        {
+          // determination of payload length (bytes between 0x41 and checksum)
+	  $payloadLength = 6;
+	  if ( $type == 2 ) { $payloadLength = $payloadLength + $countOfBytes; }
+		
+          $payload = chr(41).chr($payloadLength).chr(0);
+		
+	  switch ( $type ) {
+            case 1: // Read
+	      $payload = $payload.chr(1).
+	      break;
+            case 2: // Write
+	      break;
+            case 7: // Function
+	      break;
+	    default:
+	      return false;
+	      break;
+	  }
+	}
+	    
+	private function getDataFromControl( $addressAsString, $requestedLength )
+	{
+	  // Clear old data
+	  $this->SetBuffer( "ReceiveBuffer", "" );
+          $this->SetBuffer( "RequestedData", "" );
+	
+	  // Calculate package
+	  $requestPackage = $this->createPackage( 1, 
+	
+	}
+	    
         //=== Module Prefix Functions ===================================================================================
         /* Own module functions called via the defined prefix ViessControl_* 
         *
