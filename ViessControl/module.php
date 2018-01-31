@@ -138,12 +138,14 @@
        
         //=== Tool Functions ============================================================================================
         function strToHex($string){
+		$this->sendDebug( "Viess", "strToHex Start", 0 );
             $hex = '';
             for ($i=0; $i<strlen($string); $i++){
                 $ord = ord($string[$i]);
                 $hexCode = dechex($ord);
                 $hex .= substr('0'.$hexCode, -2);
             }
+		$this->sendDebug( "Viess", "strToHex End", 0 );
             return strToUpper($hex);
 	}
 	    
