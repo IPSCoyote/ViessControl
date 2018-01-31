@@ -45,6 +45,8 @@
 	      $receivedData = $receivedData.$data->Buffer;             // Append newly received data
 	      $this->SetBuffer( "ReceiveBuffer", $receivedData );      // Store fully received data to buffer
 			  
+	      $this->sendDebug( "Viess", "Received so far: ".strToHex($receivedData),0 );
+			  
 	      // Check, if answer to data request is complete
 	      if ( strlen( $receivedData ) >= 3 ) // 0x06 is the simple ACK flag, 2nd byte needed
 	      {	      
@@ -132,21 +134,23 @@
         }
        
         //=== Tool Functions ============================================================================================
-	private function String2Hex($string){
-          $hex='';
-          for ($i=0; $i < strlen($string); $i++){
-            $hex .= dechex(ord($string[$i]));
-          }
-          return $hex;
-        }
-  
-        private function Hex2String($hex){
-          $string='';
-          for ($i=0; $i < strlen($hex)-1; $i+=2){
-            $string .= chr(hexdec($hex[$i].$hex[$i+1]));
-          }
-          return $string;
-        }     
+        function strToHex($string){
+            $hex = '';
+            for ($i=0; $i<strlen($string); $i++){
+                $ord = ord($string[$i]);
+                $hexCode = dechex($ord);
+                $hex .= substr('0'.$hexCode, -2);
+            }
+            return strToUpper($hex);
+	}
+	    
+        function hexToStr($hex){
+            $string='';
+            for ($i=0; $i < strlen($hex)-1; $i+=2){
+                $string .= chr(hexdec($hex[$i].$hex[$i+1]));
+            }
+            return $string;
+        }  
 	    
         //=== Module Prefix Functions ===================================================================================
         /* Own module functions called via the defined prefix ViessControl_* 
