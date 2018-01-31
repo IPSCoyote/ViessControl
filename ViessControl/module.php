@@ -52,9 +52,8 @@
 	      {	      
 		 // in the 3nd byte the length of the payload (ACK + 0x41 package start first) is defined
 		 $expectedPayloadLength = hexdec($receivedData[2]);
+		 $this->sendDebug( "Viess", "Payload-Laenge ".hexdec($receivedData[2])." oder ".ord($receivedData[2]), 0 );
 		 $expectedPayloadLength = $expectedPayloadLength + 4; // Start 06 41 + length + Checksum
-		      
-		 $this->sendDebug( "Viess", "Erwarte Antwort-Laenge ".$expectedPayloadLength, 0 );
 		      
 		 if ( strlen( $requestedData ) >= $expectedPayloadLength )
 		 {			
