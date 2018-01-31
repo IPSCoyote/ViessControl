@@ -40,17 +40,14 @@
 			  
 	    case ViessControl::COMPORT_DATA_REQUESTED:
 	      $this->sendDebug( "Viess", "  Case B", 0 );
-			  $this->sendDebug( "Viess", "  und", 0 );
 	      // data was requested from the control
 	      // expected answer is like 0x06 41 07 01 01 55 25 02 07 01 8D
 	      $receivedData = $this->GetBuffer( "ReceiveBuffer" );     // Get previously received data
-			  $this->sendDebug( "Viess", "  jetzt", 0 );
 	      $receivedData = $receivedData.$data->Buffer;             // Append newly received data
-			  $this->sendDebug( "Viess", "  noch", 0 );
 	      $this->SetBuffer( "ReceiveBuffer", $receivedData );      // Store fully received data to buffer
 		
 	      $this->sendDebug( "Viess", "   Convert to Hex", 0 ); 		  
-	      $receivedHex = strToHex( $receivedData );	  
+	      //$receivedHex = strToHex( $receivedData );	  
 	      $this->sendDebug( "Viess", "   Received so far: ".$receivedHex, 0 );
 			  
 	      // Check, if answer to data request is complete
