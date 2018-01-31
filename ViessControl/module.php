@@ -75,6 +75,9 @@
 		   $this->sendDebug( "Viess", "  Received Byte 6: ".ord($receivedData[6]), 0 );
                    $this->sendDebug( "Viess", "  Received Byte 7: ".ord($receivedData[7]), 0 );
 	           $this->sendDebug( "Viess", "  Received Byte 8: ".ord($receivedData[8]), 0 );
+		   $this->sendDebug( "Viess", "  Received Byte 9: ".ord($receivedData[9]), 0 );
+                   $this->sendDebug( "Viess", "  Received Byte 10: ".ord($receivedData[10]), 0 );
+	           $this->sendDebug( "Viess", "  Received Byte 11: ".ord($receivedData[11]), 0 );
 		   $this->SetBuffer( "RequestedData", substr($receivedData, 8, 2));
 	           $this->SetBuffer( "PortState", ViessControl::COMPORT_READY );  // Communication done 
 		 }
