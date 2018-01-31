@@ -1,0 +1,204 @@
+{
+	{
+		control:     "V050HK1M",
+		controlID:   "20B4",
+		protocol:    "KW",
+		description: "Vitotronic 200-H / 050 (HK1M)"
+	},
+	{
+		control:     "V050HK1S",
+		controlID:   "20AC",
+		protocol:    "KW",
+		description: "Vitotronic 200-H / 050 (HK1S)"
+	},
+	{
+		control:     "V050HK1W",
+		controlID:   "20AA",
+		protocol:    "KW",
+		description: "Vitotronic 200-H / 050 (HK1W)"
+	},
+	{
+		control:     "V050HK3S",
+		controlID:   "20AD",
+		protocol:    "KW",
+		description: "Vitotronic 200-H / 050 (HK3S)"
+	},
+	{
+		control:     "V050HK3W",
+		controlID:   "20AB",
+		protocol:    "KW",
+		description: "Vitotronic 200-H / 050 (HK3W)"
+	},
+	{
+		control:     "V100GC1",
+		controlID:   "20A0",
+		protocol:    "KW",
+		description: "Vitotronic 100 (GC1)"
+	},
+	{
+		control:     "V100KC2",
+		controlID:   "2091",
+		protocol:    "KW",
+		description: "Vitotronic 100 (KC2)"
+	},
+	{
+		control:     "V150KB1",
+		controlID:   "2092",
+		protocol:    "KW",
+		description: "Vitotronic 150 (KB1)"
+	},
+	{
+		control:     "V200GW1",
+		controlID:   "20A4",
+		protocol:    "KW",
+		description: "Vitotronic 200 (GW1)"
+	},
+	{
+		control:     "V200KW1",
+		controlID:   "2094",
+		protocol:    "KW",
+		description: "Vitotronic 200 (KW1)"
+	},
+	{
+		control:     "V200KW2",
+		controlID:   "2098",
+		protocol:    "KW",
+		description: "Vitotronic 200 (KW2)"
+	},
+	{
+		control:     "V300GW2",
+		controlID:   "20A5",
+		protocol:    "KW",
+		description: "Vitotronic 300 (GW2)"
+	},
+	{
+		control:     "V300KW3",
+		controlID:   "209C",
+		protocol:    "KW",
+		description: "Vitotronic 300 (KW3)"
+	},
+	{
+		control:     "V333MW1",	
+		controlID:   "20B8",
+		protocol:    "300,KW",
+		description: "Vitotronic 300-K / 333 (MW1)"
+	},
+	{
+		control:     "V333MW1S",	
+		controlID:   "20B9",
+		protocol:    "300,KW",
+		description: "Vitotronic 300-K / 333 (MW1S)"
+	},
+	{
+		control:     "V333MW2",	
+		controlID:   "20BA",
+		protocol:    "300,KW",
+		description: "Vitotronic 300-K / 333 (MW2)"
+	},
+	{
+		control:     "VDensHC1",	
+		controlID:   "20C0",
+		protocol:    "300,KW",
+		description: "Vitodens 200 / 300 mit Vitotronic 100 (HC1)"
+	},
+	{
+		control:     "VDensHC2",	
+		controlID:   "20C1",
+		protocol:    "300,KW",
+		description: "Vitodens 200 / 300 mit Vitotronic 100 (HC2)"
+	},
+	{
+		control:     "VDensHO1",	
+		controlID:   "20C2",
+		protocol:    "300,KW",
+		description: "Vitodens 200 / 300 mit Vitotronic 200 (HO1)"
+	},
+		control:     "VPendHC1",	
+		controlID:   "20C3",
+		protocol:    "300,KW",
+		description: "Vitopend 200 mit Vitotronic 100 (HC1)"
+	},
+	{
+		control:     "VPendHC2",	
+		controlID:   "20C4",
+		protocol:    "300,KW",
+		description: "Vitopend 200 mit Vitotronic 100 (HC2)"
+	},
+	{
+		control:     "VPendHO1",	
+		controlID:   "20C5",
+		protocol:    "300,KW",
+		description: "Vitopend 200 mit Vitotronic 200 (HO1)"
+	},
+	{
+		control:     "VPlusHC1",	
+		controlID:   "20C6",
+		protocol:    "300,KW",
+		description: "Vitoplus mit Vitotronic 100 (HC1)"
+	},
+	{
+		control:     "VPlusHC2",	
+		controlID:   "20C7",
+		protocol:    "300,KW",
+		description: "Vitoplus mit Vitotronic 100 (HC2)"
+	},
+	{
+		control:     "VPlusHO1",	
+		controlID:   "20C8",
+		protocol:    "300,KW",
+		description: "Vitoplus 300 / Vitoladens 300 mit Vitotronic 200 (HO1)"
+	},
+		control:     "VScotHC1",	
+		controlID:   "20C9",
+		protocol:    "300,KW",
+		description: "Vitodens 200 / 300 mit Vitotronic 100 (HC1)"
+	},
+	{
+		control:     "VScotHC2",	
+		controlID:   "20CA",
+		protocol:    "300,KW",
+		description: "Vitodens 200 mit Vitotronic 100 (HC2)"
+	},
+	{
+		control:     "VScotHO1",	
+		controlID:   "20CB",
+		protocol:    "300,KW",
+		description: "Vitodens200 / 300 mit Vitotronic 200 (HO1)"
+	},
+	{
+		control:     "VBC700_AW",	
+		controlID:   "2047",
+		protocol:    "300,KW",
+		description: "Vitocal 300-A mit WPR 300"
+	},
+	{
+		control:     "VBC702-BW",	
+		controlID:   "2048",
+		protocol:    "300,KW",
+		description: "Vitocal 2xx-G / 3xx-G mit Vitotronic 200 (Typ WO1B)"
+	},
+	{
+		control:     "VBC550P",	
+		controlID:   "2033",
+		protocol:    "300,KW",
+		description: "Vitotronic 200 (FO1)"
+	},
+	{
+		control:     "V200KO2B",	
+		controlID:   "209F",
+		protocol:    "300,KW",
+		description: "Vitotronic 200 (KO2B)"
+	},
+	{
+		control:     "V200KO1B",	
+		controlID:   "209F",
+		protocol:    "300,KW",
+		description: "Vitotronic 200 (KO1B)"
+	},
+	{
+		control:     "Vitotronic 200",
+		controlID:   "204D",
+		protocol:    "300,KW2",
+		description: "Vitotronic 200 (WO1C)"
+	}
+}
