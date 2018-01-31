@@ -65,9 +65,9 @@
 			  
 			  
 	      $text = "  Data combined: ";
-	      for( $i = 0; $i<strlen( $receivedData ); $i++ )
+	      for( $i = 0; $i<strlen( utf8_decode($receivedData) ); $i++ )
 	      { 
-		  $text = $text.ord( $receivedData[$i] )." ";
+		  $text = $text.ord( utf8_decode($receivedData)[$i] )." ";
 	      }
 			  $this->sendDebug( "Viess", $text, 0 );
 			  
