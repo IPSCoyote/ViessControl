@@ -46,9 +46,9 @@
 	      $receivedData = $receivedData.$data->Buffer;             // Append newly received data
 	      $this->SetBuffer( "ReceiveBuffer", $receivedData );      // Store fully received data to buffer
 		
-			  
+	      $this->sendDebug( "Viess", "   Convert to Hex",0 ); 		  
 	      $receivedHex = strToHex( $receivedData );	  
-	      $this->sendDebug( "Viess", "Received so far: ".$receivedHex,0 );
+	      $this->sendDebug( "Viess", "   Received so far: ".$receivedHex,0 );
 			  
 	      // Check, if answer to data request is complete
 	      if ( strlen( $receivedData ) >= 3 ) // 0x06 is the simple ACK flag, 2nd byte needed
