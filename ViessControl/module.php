@@ -48,12 +48,13 @@
 	      // Check, if answer to data request is complete
 	      if ( strlen( $receivedData ) >= 3 ) // 0x06 is the simple ACK flag, 2nd byte needed
 	      {	      
+		 $this->sendDebug( "Viess", "Check all data is there... ", 0 );
 		 // in the 3nd byte the length of the payload (ACK + 0x41 package start first) is defined
-		 $expectedPayloadLength = ord($receivedData[2]);
-		 $expectedPayloadLength = $expectedPayloadLength + 4; // Start 06 41 + length + Checksum
+		 $expectedPayloadLength = ord($receivedData[2])+ 4; // Start 06 41 + length + Checksum
 		      
 		 if ( strlen( $requestedData ) >= $expectedPayloadLength )
 		 {
+		   $this->sendDebug( "Viess", "YES! ", 0 );
 		   // Get Payload from transmitted data
 	           $this->sendDebug( "Viess", "ReceiveData Length: ".ord($receivedData[7]), 0 );
 		   $this->SetBuffer( "RequestedData", substr($receivedData, 8, ord($receivedData[7])));
