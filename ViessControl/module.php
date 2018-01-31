@@ -48,13 +48,13 @@
 	      $this->sendDebug( "Viess", $receivedData, 0 );
 			  
 	      // Check, if answer to data request is complete
-	      if ( strlen( $receivedData ) >= 2 ) // 0x06 is the simple ACK flag, 2nd byte needed
+	      if ( strlen( $receivedData ) >= 3 ) // 0x06 is the simple ACK flag, 2nd byte needed
 	      {	      
-		 // in the 2nd byte the length of the payload is defined
-		 $expectedPayloadLength = hexdec($receivedData[1]);
+		 // in the 3nd byte the length of the payload (ACK + 0x41 package start first) is defined
+		 $expectedPayloadLength = hexdec($receivedData[2]);
 		 $expectedPayloadLength = $expectedPayloadLength + 4; // Start 06 41 + length + Checksum
 		      
-		 $this->sendDebug( "Viess", "Länge ".$expectedPayloadLength, 0 );
+		 $this->sendDebug( "Viess", "Erwarte Antwort-Laenge ".$expectedPayloadLength, 0 );
 		      
 		 if ( strlen( $requestedData ) >= $expectedPayloadLength )
 		 {			
