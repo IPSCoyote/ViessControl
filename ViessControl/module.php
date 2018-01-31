@@ -51,9 +51,9 @@
 	      // data was requested from the control
 	      // expected answer is like 0x06 41 07 01 01 55 25 02 07 01 8D
 	      $receivedData = $this->GetBuffer( "ReceiveBuffer" );     // Get previously received data
-			  $this->sendDebug( "Viess", "  Length from Buffer: ".strlen($receiveData), 0 );
+			  $this->sendDebug( "Viess", "  Length from Buffer: ".strlen($receivedData), 0 );
 	      $receivedData = $receivedData.$data->Buffer;             // Append newly received data
-			  $this->sendDebug( "Viess", "  Length to Buffer: ".strlen($receiveData), 0 );
+			  $this->sendDebug( "Viess", "  Length to Buffer: ".strlen($receivedData), 0 );
 	      $this->SetBuffer( "ReceiveBuffer", $receivedData );      // Store fully received data to buffer
 			  
 	      // Check, if answer to data request is complete
