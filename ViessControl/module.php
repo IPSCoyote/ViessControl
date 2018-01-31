@@ -266,9 +266,10 @@
               // End Communication
               $this->endCommunication();
               return $result;
-            }
 	  }
-          else return false;
+          else { 
+            return false; 
+	  }
         }
         
     }
