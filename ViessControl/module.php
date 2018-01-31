@@ -41,18 +41,20 @@
 	    case ViessControl::COMPORT_DATA_REQUESTED:
 	      // data was requested from the control
 	      // expected answer is like 0x06 41 07 01 01 55 25 02 07 01 8D
-	      $requestedData = $this->GetBuffer( "RequestedData" );	
-	      $requestedData = $requestedData.$data->Buffer;
-	      $this->SetBuffer( "RequestedData", $requestedData );
+	      $receivedData = $this->GetBuffer( "ReceiveBuffer" );     // Get previously received data
+	      $receivedData = $receivedData.$data->Buffer;             // Append newly received data
+	      $this->SetBuffer( "ReceiveBuffer", $receivedData );      // Store fully received data to buffer
 			  
-	      $this->sendDebug( "Viess", $requestedData, 0 );
+	      $this->sendDebug( "Viess", $receivedData, 0 );
 			  
 	      // Check, if answer to data request is complete
-	      if ( strlen( $requestedData ) >= 2 )
+	      if ( strlen( $receivedData ) >= 2 ) // 0x06 is the simple ACK flag, 2nd byte needed
 	      {	      
 		 // in the 2nd byte the length of the payload is defined
-		 $expectedPayloadLength = hexdec($requestedData[1]);
+		 $expectedPayloadLength = hexdec($receivedData[1]);
 		 $expectedPayloadLength = $expectedPayloadLength + 4; // Start 06 41 + length + Checksum
+		      
+		 $this->sendDebug( "Viess", "Länge ".$expectedPayloadLength, 0 );
 		      
 		 if ( strlen( $requestedData ) >= $expectedPayloadLength )
 		 {			
@@ -163,7 +165,7 @@
             if ( $this->GetBuffer( "PortState" ) == ViessControl::COMPORT_READY )
 	    {
 	      // Clear old data
-	      $this->SetBuffer( "RequestedData", "" );
+	      $this->SetBuffer( "ReceiveBuffer", "" );
 	      // send request
 	      $this->SetBuffer( "PortState", ViessControl::COMPORT_DATA_REQUESTED ); // to be done before request is send
 	      $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
@@ -176,7 +178,7 @@
 		    	   
               // End Communication
               $this->endCommunication();
-              return $this->GetBuffer( "RequestedData" );
+              return $this->GetBuffer( "ReceiveBuffer" );
             }
 	  }
           else return false;
