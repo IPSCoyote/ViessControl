@@ -39,16 +39,11 @@
 	      break;
 			  
 	    case ViessControl::COMPORT_DATA_REQUESTED:
-	      $this->sendDebug( "Viess", "  Case B", 0 );
 	      // data was requested from the control
 	      // expected answer is like 0x06 41 07 01 01 55 25 02 07 01 8D
 	      $receivedData = $this->GetBuffer( "ReceiveBuffer" );     // Get previously received data
 	      $receivedData = $receivedData.$data->Buffer;             // Append newly received data
 	      $this->SetBuffer( "ReceiveBuffer", $receivedData );      // Store fully received data to buffer
-		
-	      $this->sendDebug( "Viess", "  Convert to Hex", 0 ); 		  
-	      $receivedHex = strToHex( $receivedData );	  
-	      $this->sendDebug( "Viess", "  Received so far: ".$receivedHex, 0 );
 			  
 	      // Check, if answer to data request is complete
 	      if ( strlen( $receivedData ) >= 3 ) // 0x06 is the simple ACK flag, 2nd byte needed
@@ -62,7 +57,8 @@
 		 {
 		   $this->sendDebug( "Viess", "YES! ", 0 );
 		   // Get Payload from transmitted data
-	           $this->sendDebug( "Viess", "ReceiveData Length: ".ord($receivedData[7]), 0 );
+	           $expectedDataLength = ord($receivedData[7]);
+	           $this->sendDebug( "Viess", "ReceiveData Length: ".$expectedDataLength, 0 );
 		   $this->SetBuffer( "RequestedData", substr($receivedData, 8, ord($receivedData[7])));
 	           $this->SetBuffer( "PortState", ViessControl::COMPORT_READY );  // Communication done 
 		 }
