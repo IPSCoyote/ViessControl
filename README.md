@@ -20,7 +20,7 @@ Das Modul verwendet das Viessmann Protokoll 300 (siehe https://github.com/openv)
 
 **Unterstützte Steuerungen**
 
-* Vitodens 200/300 mit Vitotronic 200 (HO1)
+* Vitodens 200/300 mit Vitotronic 200 (HO1) (VScotHO1	20CB)
 
 
 ## 2. Systemanforderungen
