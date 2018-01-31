@@ -165,37 +165,63 @@
             return $string;
         }  
 	    
-	private function createPackage( $type, $address, $countOfBytes, $bytesToWrite )
-        {
+        private function createPackage( $type, $address, $countOfBytes, $bytesToWrite ) {
           // determination of payload length (bytes between 0x41 and checksum)
-	  $payloadLength = 6;
-	  if ( $type == 2 ) { $payloadLength = $payloadLength + $countOfBytes; }
-		
-          $payload = chr(41).chr($payloadLength).chr(0);
-		
-	  switch ( $type ) {
-            case 1: // Read
-	      $payload = $payload.chr(1).
-	      break;
-            case 2: // Write
-	      break;
-            case 7: // Function
-	      break;
-	    default:
-	      return false;
-	      break;
+          $payloadLength = 5;
+          if ( $type == 2 ) { $payloadLength = $payloadLength + $countOfBytes; }
+          $package = "\x41".chr($payloadLength);
+	  
+          // perpare payload
+	  $package = $package."\x0".chr($type).chr( hexdec( substr( $address,0,2 ) ) ).chr( hexdec( substr( $address,2,2 ) ) ).chr($countOfBytes);
+	  // add Bytes to write in case of write request
+	  if ( $type == 2 ) {
+	    for( $i=0; $i<$countOfBytes; $i++ ) {
+		  $package = $package.chr( hexdec( substr( $bytesToWrite( $i*2, 2 ) ) ) );
+		}
 	  }
+	  
+	  // calculate checksum
+	  $sum = 0;
+	  for( $i=1; $i<strlen( $package ); $i++ ) {
+	    $sum = $sum + ord( $package[$i] );
+	  }
+	  $hexCode = substr(dechex( $sum ),-2);
+          $hexCode .= substr('0'.$hexCode, -2);	  
+	  $package = $package.chr(hexdec($hexCode));
+	  
+	  return $package;
 	}
 	    
-	private function getDataFromControl( $addressAsString, $requestedLength )
+	private function getDataFromControl( $address, $requestedLength )
 	{
-	  // Clear old data
-	  $this->SetBuffer( "ReceiveBuffer", "" );
-          $this->SetBuffer( "RequestedData", "" );
+	  if ( $this->GetBuffer( "PortState" ) == ViessControl::COMPORT_READY )
+	  {
+	    // Clear old data
+	    $this->SetBuffer( "ReceiveBuffer", "" );
+            $this->SetBuffer( "RequestedData", "" );
 	
-	  // Calculate package
-	  $requestPackage = $this->createPackage( 1, 
-	
+	    // Calculate package
+	    $requestPackage = $this->createPackage( 1, $address, $requestedLength, "" );
+	    // send request
+	    $this->SetBuffer( "PortState", ViessControl::COMPORT_DATA_REQUESTED ); // to be done before request is send
+	    $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
+                                                      "Buffer" => utf8_encode($requestPackage))));	
+	    $tryCounter = 10;
+	    do {
+              sleep(1); // wait 1 second
+	      $tryCounter--;	  
+	    } while ( $this->GetBuffer( "PortState" ) != ViessControl::COMPORT_READY AND $tryCounter > 0 );
+		
+	    if ( $this->GetBuffer( "PortState" ) == ViessControl::COMPORT_READY ) {
+	      return $this->GetBuffer( "RequestedData" );
+	    }
+	    else { 
+	      return false; 
+	    }
+	  }
+	  else { 
+            return false; 
+	  }
 	}
 	    
         //=== Module Prefix Functions ===================================================================================
@@ -212,28 +238,30 @@
           if ( $this->startCommunication() === true ) {
             // Init successful
 		  
+	    $result = getDataFromControl( "00F8", 2 );	  
+		  
             // send command to request identification data from control ( 0x41 0x05 0x00 0x01 0x00 0xF8 0x02 0x00 ) (Protocol 300)
-            if ( $this->GetBuffer( "PortState" ) == ViessControl::COMPORT_READY )
-	    {
+            //if ( $this->GetBuffer( "PortState" ) == ViessControl::COMPORT_READY )
+	    //{
 	      // Clear old data
-	      $this->SetBuffer( "ReceiveBuffer", "" );
-              $this->SetBuffer( "RequestedData", "" );
+	      //$this->SetBuffer( "ReceiveBuffer", "" );
+              //$this->SetBuffer( "RequestedData", "" );
 	      // send request
-	      $this->SetBuffer( "PortState", ViessControl::COMPORT_DATA_REQUESTED ); // to be done before request is send
-	      $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
-                                                        "Buffer" => utf8_encode("\x41\x05\x00\x01\x00\xF8\x02\x00"))));
-	      $tryCounter = 10;
-	      do {
-                sleep(1); // wait 1 second
-	        $tryCounter--;	  
-	      } while ( $this->GetBuffer( "PortState" ) != ViessControl::COMPORT_READY AND $tryCounter > 0 );
+	      //$this->SetBuffer( "PortState", ViessControl::COMPORT_DATA_REQUESTED ); // to be done before request is send
+	      //$this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
+              //                                          "Buffer" => utf8_encode("\x41\x05\x00\x01\x00\xF8\x02\x00"))));
+	      //$tryCounter = 10;
+	      //do {
+              //  sleep(1); // wait 1 second
+	      //  $tryCounter--;	  
+	      //} while ( $this->GetBuffer( "PortState" ) != ViessControl::COMPORT_READY AND $tryCounter > 0 );
 		
-	      if ( $this->GetBuffer( "PortState" ) == ViessControl::COMPORT_READY ) {
-	        $result = $this->GetBuffer( "RequestedData" );
-	      }
-	      else { 
-		$result = false; 
-	      }
+	      //if ( $this->GetBuffer( "PortState" ) == ViessControl::COMPORT_READY ) {
+	      //  $result = $this->GetBuffer( "RequestedData" );
+	      //}
+	      //else { 
+		//$result = false; 
+	      //}
 		    
               // End Communication
               $this->endCommunication();
