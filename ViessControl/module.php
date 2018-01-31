@@ -66,7 +66,8 @@
 		 if ( strlen( $receivedData ) >= $expectedPayloadLength )
 		 {
 		   // Get Payload from transmitted data
-		   $this->SetBuffer( "RequestedData", substr($receivedData, 8, 2));
+	           $requestedData =  substr($receivedData, 8, 2);
+		   $this->SetBuffer( "RequestedData", $requestedData );
 	           $this->SetBuffer( "PortState", ViessControl::COMPORT_READY );  // Communication done 
 		 }
 	      }
