@@ -56,7 +56,15 @@
 			  $this->sendDebug( "Viess", "  Length to Buffer: ".strlen($receivedData), 0 );
 	      $this->SetBuffer( "ReceiveBuffer", $receivedData );      // Store fully received data to buffer
 			  
-	      $text = "  Data: ";
+	      $text = "  Data to Function: ";
+	      for( $i = 0; $i<strlen( $data->Buffer ); $i++ )
+	      { 
+		  $text = $text.ord( $data->Buffer[$i] )." ";
+	      }
+			  $this->sendDebug( "Viess", $text, 0 );	  
+			  
+			  
+	      $text = "  Data combined: ";
 	      for( $i = 0; $i<strlen( $receivedData ); $i++ )
 	      { 
 		  $text = $text.ord( $receivedData[$i] )." ";
