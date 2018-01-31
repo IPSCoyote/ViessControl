@@ -24,7 +24,7 @@
         public function ReceiveData($JSONString) {
 	
 	  $this->sendDebug( "Viess", "ReceiveData Begin", 0 );	
-	  $this->sendDebug( "Viess", $this->GetBuffer( "PortState" ), 0 );
+	  $this->sendDebug( "Viess", "  Mode: ".$this->GetBuffer( "PortState" ), 0 );
 		
           // Receive data from serial port I/O
           $data = json_decode($JSONString);	
@@ -45,7 +45,7 @@
 	      $receivedData = $receivedData.$data->Buffer;             // Append newly received data
 	      $this->SetBuffer( "ReceiveBuffer", $receivedData );      // Store fully received data to buffer
 			  
-	      $this->sendDebug( "Viess", "Received so far: ".strToHex($receivedData),0 );
+	      $this->sendDebug( "Viess", "Received so far: ".Hex2Str($receivedData),0 );
 			  
 	      // Check, if answer to data request is complete
 	      if ( strlen( $receivedData ) >= 3 ) // 0x06 is the simple ACK flag, 2nd byte needed
