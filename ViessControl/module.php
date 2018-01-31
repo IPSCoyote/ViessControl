@@ -51,25 +51,10 @@
 	      // data was requested from the control
 	      // expected answer is like 0x06 41 07 01 01 55 25 02 07 01 8D
 	      $receivedData = $this->GetBuffer( "ReceiveBuffer" );     // Get previously received data
-			  $this->sendDebug( "Viess", "  Length from Buffer: ".strlen($receivedData), 0 );
 	      $receivedData = $receivedData.$data->Buffer;             // Append newly received data
-			  $this->sendDebug( "Viess", "  Length to Buffer: ".strlen($receivedData), 0 );
 	      $this->SetBuffer( "ReceiveBuffer", $receivedData );      // Store fully received data to buffer
 			  
-	      $text = "  Data to Function: ";
-	      for( $i = 0; $i<strlen( $data->Buffer ); $i++ )
-	      { 
-		  $text = $text.ord( $data->Buffer[$i] )." ";
-	      }
-			  $this->sendDebug( "Viess", $text, 0 );	  
-			  
-			  
-	      $text = "  Data combined: ";
-	      for( $i = 0; $i<strlen( utf8_decode($receivedData) ); $i++ )
-	      { 
-		  $text = $text.ord( utf8_decode($receivedData)[$i] )." ";
-	      }
-			  $this->sendDebug( "Viess", $text, 0 );
+	      $receivedData = utf8_decode($receivedData);
 			  
 	      // Check, if answer to data request is complete
 	      if ( strlen( $receivedData ) >= 3 ) // 0x06 is the simple ACK flag, 2nd byte needed
@@ -94,7 +79,6 @@
 	           $this->sendDebug( "Viess", "  Received Byte 8: ".ord($receivedData[8]), 0 );
 		   $this->sendDebug( "Viess", "  Received Byte 9: ".ord($receivedData[9]), 0 );
                    $this->sendDebug( "Viess", "  Received Byte 10: ".ord($receivedData[10]), 0 );
-	           $this->sendDebug( "Viess", "  Received Byte 11: ".ord($receivedData[11]), 0 );
 		   $this->SetBuffer( "RequestedData", substr($receivedData, 8, 2));
 	           $this->SetBuffer( "PortState", ViessControl::COMPORT_READY );  // Communication done 
 		 }
