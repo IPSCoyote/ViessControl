@@ -34,7 +34,7 @@
 	  switch ( $this->GetBuffer( "PortState" ) )
 	  {
 	    case ViessControl::COMPORT_PREINIT:
-	      // 0x05 confirms the 0x04 request 
+	      // 0x04 send, 0x05 confirms this and has to be replied immediately by 0x16 0x00 0x00 
 	      if ( $data->Buffer == "\x05" )
 		$this->SetBuffer( "PortState", ViessControl::COMPORT_INIT );    
 	        $this->SendDataToParent(json_encode(Array("DataID" => "{79827379-F36E-4ADA-8A95-5F8D1DC92FA9}", 
@@ -42,7 +42,7 @@
 	      break;
 			  
 	    case ViessControl::COMPORT_INIT:
-	      // 0x06 confirms the 0x16 0x00 0x00 request 
+	      // 0x16 0x00 0x00 send, 0x06 confirms (periodic send of 0x05 ends) 
 	      if ( $data->Buffer == "\x06" )
 		$this->SetBuffer( "PortState", ViessControl::COMPORT_READY );    
 	      break;
@@ -74,6 +74,7 @@
                    $this->sendDebug( "Viess", "  Received Byte 5: ".ord($receivedData[5]), 0 );
 		   $this->sendDebug( "Viess", "  Received Byte 6: ".ord($receivedData[6]), 0 );
                    $this->sendDebug( "Viess", "  Received Byte 7: ".ord($receivedData[7]), 0 );
+	           $this->sendDebug( "Viess", "  Received Byte 8: ".ord($receivedData[8]), 0 );
 		   $this->SetBuffer( "RequestedData", substr($receivedData, 8, 2));
 	           $this->SetBuffer( "PortState", ViessControl::COMPORT_READY );  // Communication done 
 		 }
