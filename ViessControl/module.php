@@ -51,8 +51,9 @@
 		 $this->sendDebug( "Viess", "Check all data is there... ", 0 );
 		 // in the 3nd byte the length of the payload (ACK + 0x41 package start first) is defined
 		 $expectedPayloadLength = ord($receivedData[2])+ 4; // Start 06 41 + length + Checksum
+		 $this->sendDebug( "Viess", "Expected Payload length: ".$expectedPayloadLength, 0 );     
 		      
-		 if ( strlen( $requestedData ) >= $expectedPayloadLength )
+		 if ( strlen( $receivedData ) >= $expectedPayloadLength )
 		 {
 		   $this->sendDebug( "Viess", "YES! ", 0 );
 		   // Get Payload from transmitted data
