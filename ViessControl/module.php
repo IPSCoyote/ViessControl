@@ -234,6 +234,10 @@
         public function IdentifyHeatingControl() {
           /* identify the connected Heating Control */
           
+	  $string = file_get_contents("/ControlData/Controls.json");	
+	  $ViessmannControls = json_decode($string, true);	
+	  $this->sendDebug( "Viess", $ViessmannControls[0][control], 0 );
+		
           // Init Communication
           if ( $this->startCommunication() === true ) {
             // Init successful, request Data
